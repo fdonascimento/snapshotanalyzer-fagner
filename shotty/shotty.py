@@ -70,6 +70,10 @@ def list_snapshots(name, list_all):
                     break
     return
 
+def has_pending_snapshot(volume):
+    snapshots = list(volume.snapshots.all())
+    return snapshots and snapshots[0].state == 'pending'
+
 @cli.group('instances')
 def instances():
     """Commands for instances"""
@@ -88,6 +92,10 @@ def create_snapshots(name):
         i.wait_until_stopped()
 
         for v in i.volumes.all():
+            if has_pending_snapshot(v):
+                print("Skipping {0}, snapshot already in progress".format(v.id))
+                continue
+
             print("Creating snapshot of {0}".format(v.id))
             v.create_snapshot(Description="Created by Snapshotanalyzer Fagner")
 
