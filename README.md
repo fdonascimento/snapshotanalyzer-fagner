@@ -15,5 +15,6 @@ Shotty uses the configuration file created by the AWS cli. e.g.
 
 `pipenv run "python shotty/shotty.py <command> <--name-NAME>"`
 
-*command* is list, start, or stop
+*command* is instances, volumes or snapshots
+*subcommand* - depends on command
 *name* is optional
